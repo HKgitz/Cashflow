@@ -24,6 +24,23 @@ app.get("/stripe/payments", async (req, res) => {
   }
 });
 
+// ✅ Nouvelle route pour simuler un paiement
+app.post("/stripe/test-payment", async (req, res) => {
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 1200, // = 12,00 €
+      currency: 'eur',
+      payment_method: 'pm_card_visa',
+      payment_method_types: ['card'],
+      confirm: true,
+    });
+
+    res.json({ success: true, id: paymentIntent.id, status: paymentIntent.status });
+  } catch (error) {
+    console.error("Erreur paiement test :", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.use((req, res, next) => {
   console.log(`[🔥 Reçu] ${req.method} ${req.url}`);
