@@ -1,6 +1,9 @@
 import express from "express";
 import axios from "axios";
 import cors from "cors";
+import Stripe from "stripe";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors()); //
@@ -9,8 +12,7 @@ const PORT = 3000;
 const SHOPIFY_ACCESS_TOKEN = "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";
 const SHOPIFY_STORE = "pielot-test";
 
-import Stripe from "stripe";
-const stripe = new Stripe("sk_test_sk_test_51GbuSLBreYbmAF0Gd5evAQvEe9B4kqLSrJ6uVZ1zsJclERFHtZIoGjzgUInd1x8eH89JfQwaceiHwJfejl93NojI00EZrFcOXl");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.get("/stripe/payments", async (req, res) => {
   try {
@@ -61,3 +63,6 @@ app.listen(PORT, () => {
 
 
 
+app.get("/", (req, res) => {
+  res.send("🚀 Backend Cashflow actif !");
+});
