@@ -9,6 +9,19 @@ const PORT = 3000;
 const SHOPIFY_ACCESS_TOKEN = "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";
 const SHOPIFY_STORE = "pielot-test";
 
+import Stripe from "stripe";
+const stripe = new Stripe("sk_test_sk_test_51GbuSLBreYbmAF0Gd5evAQvEe9B4kqLSrJ6uVZ1zsJclERFHtZIoGjzgUInd1x8eH89JfQwaceiHwJfejl93NojI00EZrFcOXl");
+
+app.get("/stripe/payments", async (req, res) => {
+  try {
+    const payments = await stripe.paymentIntents.list({ limit: 10 });
+    res.json({ payments });
+  } catch (err) {
+    console.error("Erreur Stripe:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 app.use((req, res, next) => {
   console.log(`[🔥 Reçu] ${req.method} ${req.url}`);
@@ -43,6 +56,8 @@ app.get("/shopify/products", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Serveur backend démarré sur http://localhost:${PORT}`);
 });
+
+
 
 
 
