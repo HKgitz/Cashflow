@@ -18,9 +18,9 @@ app.get("/stripe/payments", async (req, res) => {
   try {
     const payments = await stripe.paymentIntents.list({ limit: 10 });
     res.json({ payments });
-  } catch (err) {
-    console.error("Erreur Stripe:", err.message);
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("Erreur Stripe:", error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 
